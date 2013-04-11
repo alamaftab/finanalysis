@@ -1,0 +1,3 @@
+optFileIn1='/data/in/SPY/OPT/SPY_2013-05_20130409104251.txt'
+optFileIn2= '/data/in/SPY/OPT/SPY_2013-06_20130409104255.txt'
+histFile= '/data/in/SPY/HIST/SPY_Hist.txt'

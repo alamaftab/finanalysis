@@ -3,7 +3,7 @@
 source("C:/aftab/R/finanalysis/lib/impliedVolLib.R")
 
 dataPathHist="C:/aftab/R/finanalysis/data/in/^VIX/HIST/^ViX_Hist.txt"
-dataPathOpt="C:/aftab/R/finanalysis/data/in/^VIX/OPT/^VIX_2013-06_20130319165018.txt"
+dataPathOpt="C:/aftab/R/finanalysis/data/in/SPY/OPT/SPY_2013-04_20130411122355.txt"
 histData <- read.table(dataPathHist,skip=1, header=F, sep="|")
 OptData <- read.table(dataPathOpt,skip=1, header=F, sep="|")
 
@@ -22,7 +22,7 @@ upperRange = ceiling(sharePrice + 20)
 daysToExpire = as.numeric((StrikeDate  - downloadDate)*5/7)
 daysToExpire 
 
-tt <- OptData[OptData$V7 >= lowerRange & OptData$V7 <= upperRange & OptData$V5 == "C" & OptData$V14 > 3000 & (grepl("VIX130619",OptData[,8])),]
+tt <- OptData[OptData$V7 >= lowerRange & OptData$V7 <= upperRange & OptData$V5 == "P" & OptData$V14 > 3000 & (grepl("SPY130420",OptData[,8])),]
 tt
 
 ttRowCount = as.numeric(nrow(tt))
@@ -32,7 +32,7 @@ for (i in 1:ttRowCount)
   strikePrice = tt[i,7]
   OptPrice = as.numeric(tt[i,11])
   
-  impvol =implied.vol(sharePrice,strikePrice,.012,(daysToExpire/252),OptPrice, "C")
+  impvol =implied.vol(sharePrice,strikePrice,.012,(daysToExpire/252),OptPrice, "P")
   print(strikePrice) 
   print(impvol)
   dfForGraph <- rbind(dfForGraph,c(strikePrice,impvol))
