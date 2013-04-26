@@ -2,7 +2,7 @@
 
 
 source("c:/aftab/R/finanalysis/config/finanalysis.cfg")
-source(paste(Home, "/data/parm/ImpVolChartCalSpread.in", sep = ''))
+source(paste(Home, "/data/parm/ImpVolChart.in", sep = ''))
 
 source(paste(Home, "/lib/impliedVolLib.R", sep = ''))
 
@@ -13,7 +13,7 @@ dataPathOpt= optFileIn1
 histData <- read.table(dataPathHist,skip=1, header=F, sep="|")
 OptData <- read.table(dataPathOpt,skip=1, header=F, sep="|")
 
-data.entry(dataPathOpt, dataPathHist)
+data.entry(putOrCall , otherFilter)
 
 #tt[k]=strptime(tab$autos_data.Date[k], "%Y-%m-%d", tz="")
 
@@ -38,7 +38,7 @@ dfForGraph = data.frame()
 for (i in 1:ttRowCount)
 {
   strikePrice = tt[i,7]
-  OptPrice = as.numeric(tt[i,11])
+  OptPrice = as.numeric(tt[i,12])
   
   impvol =implied.vol(sharePrice,strikePrice,.012,(daysToExpire/252),OptPrice, putOrCall)
   print(strikePrice) 
