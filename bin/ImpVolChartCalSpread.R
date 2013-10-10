@@ -5,9 +5,9 @@ source(paste(Home, "/data/parm/ImpVolChartCalSpread.in", sep = ''))
 
 source(paste(Home, "/lib/impliedVolLib.R", sep = ''))
 
-dataPathHist=paste(Home, histFile, sep = '')
-dataPathOpt1=paste(Home, optFileIn1, sep = '')
-dataPathOpt2=paste(Home, optFileIn2, sep = '')
+dataPathHist=histFile
+dataPathOpt1=optFileIn1
+dataPathOpt2=optFileIn2
 
 histData <- read.table(dataPathHist,skip=1, header=F, sep="|")
 OptData1 <- read.table(dataPathOpt1,skip=1, header=F, sep="|")
@@ -23,16 +23,16 @@ StrikeDate2 = strptime(OptData2[1,4], "%y%m%d", tz="")
 
 # get the range of price closer to strike price so band would be celling(shareprice) and floor(shareprice)
 
-lowerRange = floor(sharePrice -10)
-upperRange = ceiling(sharePrice + 20)
+lowerRange = floor(sharePrice -15)
+upperRange = ceiling(sharePrice + 10)
 
 daysToExpire1 = as.numeric((StrikeDate1  - downloadDate)*5/7)
 daysToExpire2 = as.numeric((StrikeDate2  - downloadDate)*5/7)
 
 
-tt1 <- OptData1[OptData1$V7 >= lowerRange & OptData1$V7 <= upperRange & OptData1$V5 == "P" & OptData1$V14 > 3000 & (grepl("130518",OptData1[,8])),]
+tt1 <- OptData1[OptData1$V7 >= lowerRange & OptData1$V7 <= upperRange & OptData1$V5 == "P" & OptData1$V14 > 3 & (grepl("MSFT131019",OptData1[,8])),]
 tt1
-tt2 <- OptData2[OptData2$V7 >= lowerRange & OptData2$V7 <= upperRange & OptData2$V5 == "P" & OptData2$V14 > 3000 & (grepl("130622",OptData2[,8])),]
+tt2 <- OptData2[OptData2$V7 >= lowerRange & OptData2$V7 <= upperRange & OptData2$V5 == "P" & OptData2$V14 > 3 & (grepl("MSFT131116",OptData2[,8])),]
 tt2
 
 ttRowCount1 = as.numeric(nrow(tt1))
@@ -84,11 +84,25 @@ for ( j in 1:( histrowcount -1 - noOfDaysForVolCalculation))
 histvolmax =  max(histvolArray)
 histvol =  histvolArray[1]
 
-plot(dfForGraph1[,1],dfForGraph1[,2], ylim= range(0,1))
+par( mfrow = c( 1, 2 ) )
+
+plot(dfForGraph1[,1],dfForGraph1[,2], ylim= range(0,5), col="green", lty=1,lwd = 2)
 #plot(dfForGraph2[,1],dfForGraph2[,2])
 abline(histvol,0)
 abline(histvolmax,0)
-points(dfForGraph2[,1],dfForGraph2[,2])
+points(dfForGraph2[,1],dfForGraph2[,2], col="red", lty=1,lwd = 2)
+abline(v=55)
+
+plot(tt1[,7],tt1[,11])
+points(tt2[,7],tt2[,12])
+
+merge_tt1_tt2 <- merge(tt1,tt2,by.x = "V7", by.y = "V7")
+
+points(merge_tt1_tt2$V7,(merge_tt1_tt2$V12.y - merge_tt1_tt2$V11.x), col="red", lty=1,lwd = 2)
+
+abline(h=.2)
+abline(v=32)
 
 
+par( mfrow = c( 1, 1 ) )
 
