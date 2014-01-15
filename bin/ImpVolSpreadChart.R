@@ -25,8 +25,8 @@ StrikeDate = strptime(OptData[1,4], "%y%m%d", tz="")
 
 # get the range of price closer to strike price so band would be celling(shareprice) and floor(shareprice)
 
-lowerRange = floor(sharePrice -10)
-upperRange = ceiling(sharePrice + 10)
+lowerRange = floor(sharePrice -15)
+upperRange = ceiling(sharePrice + 15)
 
 daysToExpire = as.numeric((StrikeDate  - downloadDate)*5/7)
 daysToExpire 
@@ -94,7 +94,7 @@ abline(histvol,0)
 abline(histvolmax,0)
 
 ## Example for bullish call spread.
-plot(dfForGraph[,1],dfForGraph[,5], ylim= range(0,5) ,col = "red")
-points((dfForGraph[,1]- spreadRange),dfForGraph[,4],col = "blue")
+plot(dfForGraph[,1],dfForGraph[,5], ylim= range(0,8) ,col = "red")
+points((dfForGraph[,1] + spreadRange),dfForGraph[,4],col = "blue")
 
 
